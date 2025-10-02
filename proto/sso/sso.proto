@@ -11,8 +11,8 @@ service Auth{
 }
 
 message RegisterRequest{
-    string email = 1; //email 
-    string password = 2; // password
+    string email = 1; //email of the register
+    string password = 2; // password of the register
 }
 
 message RegisterResponse{
@@ -20,19 +20,19 @@ message RegisterResponse{
 }
 
 message LoginRequest{
-    string email = 1;
-    string password = 2;
-    int32 app_id = 3;
+    string email = 1; //email of the user for login
+    string password = 2; //password of the user for login
+    int32 app_id = 3; //ID of the app to login up
 }
 
 message LoginResponse{
-    string token = 1;
+    string token = 1; //auth token of the logged in user
 }
 
 message IsAdminRequest{
-    int64 user_id = 1;
+    int64 user_id = 1; //user id to validate
 }
 
 message IsAdminResponse{
-    bool is_admin = 1;
+    bool is_admin = 1; // indicates whether the user is an admin
 }

@@ -1,3 +1,3 @@
-module github.com/Golang/protos
+module github.com/YagorX/protos
 
 go 1.24.1
