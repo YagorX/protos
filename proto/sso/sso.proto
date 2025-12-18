@@ -9,6 +9,8 @@ service Auth{
     rpc Login(LoginRequest) returns (LoginResponse);
     rpc IsAdmin(IsAdminRequest) returns (IsAdminResponse);
     rpc ValidateToken(ValidateTokenRequest) returns (ValidateTokenResponse);
+    rpc Refresh(RefreshRequest) returns (RefreshResponse);
+    rpc Logout(LogoutRequest) returns (LogoutResponse);
 }
 
 message RegisterRequest{
@@ -46,3 +48,19 @@ message ValidateTokenRequest{
 message ValidateTokenResponse{
     int64 user_id = 1; // user ID if token is valid
 }
+
+message RefreshRequest {
+  string refresh_token = 1;
+  int64  app_id = 2;
+}
+
+message RefreshResponse {
+  string access_token = 1;
+  string refresh_token = 2;
+}
+
+message LogoutRequest {
+  string refresh_token = 1;
+}
+
+message LogoutResponse {}
