@@ -19,7 +19,7 @@ message RegisterRequest{
 }
 
 message RegisterResponse{
-    int64 user_id = 1; // user ID of the register user
+    int64 user_uuid = 1; // user ID of the register user
 }
 
 message LoginRequest{

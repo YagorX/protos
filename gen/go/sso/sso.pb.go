@@ -75,7 +75,7 @@ func (x *RegisterRequest) GetPassword() string {
 
 type RegisterResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        int64                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"` // user ID of the register user
+	UserUuid      int64                  `protobuf:"varint,1,opt,name=user_uuid,json=userUuid,proto3" json:"user_uuid,omitempty"` // user ID of the register user
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -110,9 +110,9 @@ func (*RegisterResponse) Descriptor() ([]byte, []int) {
 	return file_sso_sso_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *RegisterResponse) GetUserId() int64 {
+func (x *RegisterResponse) GetUserUuid() int64 {
 	if x != nil {
-		return x.UserId
+		return x.UserUuid
 	}
 	return 0
 }
@@ -596,9 +596,9 @@ const file_sso_sso_proto_rawDesc = "" +
 	"\rsso/sso.proto\x12\x04auth\"C\n" +
 	"\x0fRegisterRequest\x12\x14\n" +
 	"\x05email\x18\x01 \x01(\tR\x05email\x12\x1a\n" +
-	"\bpassword\x18\x02 \x01(\tR\bpassword\"+\n" +
-	"\x10RegisterResponse\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\x03R\x06userId\"W\n" +
+	"\bpassword\x18\x02 \x01(\tR\bpassword\"/\n" +
+	"\x10RegisterResponse\x12\x1b\n" +
+	"\tuser_uuid\x18\x01 \x01(\x03R\buserUuid\"W\n" +
 	"\fLoginRequest\x12\x14\n" +
 	"\x05email\x18\x01 \x01(\tR\x05email\x12\x1a\n" +
 	"\bpassword\x18\x02 \x01(\tR\bpassword\x12\x15\n" +
