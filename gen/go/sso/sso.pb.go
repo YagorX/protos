@@ -555,6 +555,7 @@ func (x *LogoutRequest) GetRefreshToken() string {
 
 type LogoutResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	Logout        bool                   `protobuf:"varint,1,opt,name=logout,proto3" json:"logout,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -589,6 +590,13 @@ func (*LogoutResponse) Descriptor() ([]byte, []int) {
 	return file_sso_sso_proto_rawDescGZIP(), []int{11}
 }
 
+func (x *LogoutResponse) GetLogout() bool {
+	if x != nil {
+		return x.Logout
+	}
+	return false
+}
+
 var File_sso_sso_proto protoreflect.FileDescriptor
 
 const file_sso_sso_proto_rawDesc = "" +
@@ -621,8 +629,9 @@ const file_sso_sso_proto_rawDesc = "" +
 	"\faccess_token\x18\x01 \x01(\tR\vaccessToken\x12#\n" +
 	"\rrefresh_token\x18\x02 \x01(\tR\frefreshToken\"4\n" +
 	"\rLogoutRequest\x12#\n" +
-	"\rrefresh_token\x18\x01 \x01(\tR\frefreshToken\"\x10\n" +
-	"\x0eLogoutResponse2\xe2\x02\n" +
+	"\rrefresh_token\x18\x01 \x01(\tR\frefreshToken\"(\n" +
+	"\x0eLogoutResponse\x12\x16\n" +
+	"\x06logout\x18\x01 \x01(\bR\x06logout2\xe2\x02\n" +
 	"\x04Auth\x129\n" +
 	"\bRegister\x12\x15.auth.RegisterRequest\x1a\x16.auth.RegisterResponse\x120\n" +
 	"\x05Login\x12\x12.auth.LoginRequest\x1a\x13.auth.LoginResponse\x126\n" +
