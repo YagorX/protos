@@ -4,7 +4,7 @@ option go_package = "khorkov.sso.v1;ssov1";
 package auth;
 
 service Auth{
-  rpc Register(RegisterRequest) returns (RegisterResponse);
+  // rpc Register(RegisterRequest) returns (RegisterResponse);
   rpc Login(LoginRequest) returns (LoginResponse);
   rpc IsAdmin(IsAdminRequest) returns (IsAdminResponse);
   rpc ValidateToken(ValidateTokenRequest) returns (ValidateTokenResponse);
@@ -12,11 +12,11 @@ service Auth{
   rpc Logout(LogoutRequest) returns (LogoutResponse);
 }
 
-message RegisterRequest {
-  string email = 1;
-  string password = 2;
-  string username = 3;
-}
+// message RegisterRequest {
+//   string email = 1;
+//   string password = 2;
+//   string username = 3;
+// }
 
 
 message RegisterResponse{
