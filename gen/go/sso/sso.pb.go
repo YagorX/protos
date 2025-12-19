@@ -126,10 +126,10 @@ func (x *RegisterResponse) GetUserUuid() string {
 }
 
 type LoginRequest struct {
-	state    protoimpl.MessageState `protogen:"open.v1"`
-	Email    string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
-	Password string                 `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
-	AppId    int32                  `protobuf:"varint,3,opt,name=app_id,json=appId,proto3" json:"app_id,omitempty"`
+	state       protoimpl.MessageState `protogen:"open.v1"`
+	EmailOrName string                 `protobuf:"bytes,1,opt,name=email_or_name,json=emailOrName,proto3" json:"email_or_name,omitempty"`
+	Password    string                 `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
+	AppId       int32                  `protobuf:"varint,3,opt,name=app_id,json=appId,proto3" json:"app_id,omitempty"`
 	// ✅ добавили
 	DeviceId      string `protobuf:"bytes,4,opt,name=device_id,json=deviceId,proto3" json:"device_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -166,9 +166,9 @@ func (*LoginRequest) Descriptor() ([]byte, []int) {
 	return file_sso_sso_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *LoginRequest) GetEmail() string {
+func (x *LoginRequest) GetEmailOrName() string {
 	if x != nil {
-		return x.Email
+		return x.EmailOrName
 	}
 	return ""
 }
@@ -658,9 +658,9 @@ const file_sso_sso_proto_rawDesc = "" +
 	"\bpassword\x18\x02 \x01(\tR\bpassword\x12\x1a\n" +
 	"\busername\x18\x03 \x01(\tR\busername\"/\n" +
 	"\x10RegisterResponse\x12\x1b\n" +
-	"\tuser_uuid\x18\x01 \x01(\tR\buserUuid\"t\n" +
-	"\fLoginRequest\x12\x14\n" +
-	"\x05email\x18\x01 \x01(\tR\x05email\x12\x1a\n" +
+	"\tuser_uuid\x18\x01 \x01(\tR\buserUuid\"\x82\x01\n" +
+	"\fLoginRequest\x12\"\n" +
+	"\remail_or_name\x18\x01 \x01(\tR\vemailOrName\x12\x1a\n" +
 	"\bpassword\x18\x02 \x01(\tR\bpassword\x12\x15\n" +
 	"\x06app_id\x18\x03 \x01(\x05R\x05appId\x12\x1b\n" +
 	"\tdevice_id\x18\x04 \x01(\tR\bdeviceId\"W\n" +
