@@ -23,8 +23,8 @@ const (
 
 type RegisterRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`       //email of the register
-	Password      string                 `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"` // password of the register
+	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
+	Password      string                 `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -75,7 +75,7 @@ func (x *RegisterRequest) GetPassword() string {
 
 type RegisterResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserUuid      int64                  `protobuf:"varint,1,opt,name=user_uuid,json=userUuid,proto3" json:"user_uuid,omitempty"` // user ID of the register user
+	UserUuid      string                 `protobuf:"bytes,1,opt,name=user_uuid,json=userUuid,proto3" json:"user_uuid,omitempty"` // <-- UUID строкой
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -110,18 +110,18 @@ func (*RegisterResponse) Descriptor() ([]byte, []int) {
 	return file_sso_sso_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *RegisterResponse) GetUserUuid() int64 {
+func (x *RegisterResponse) GetUserUuid() string {
 	if x != nil {
 		return x.UserUuid
 	}
-	return 0
+	return ""
 }
 
 type LoginRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`               //email of the user for login
-	Password      string                 `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`         //password of the user for login
-	AppId         int32                  `protobuf:"varint,3,opt,name=app_id,json=appId,proto3" json:"app_id,omitempty"` //ID of the app to login up
+	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
+	Password      string                 `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
+	AppId         int32                  `protobuf:"varint,3,opt,name=app_id,json=appId,proto3" json:"app_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -231,7 +231,7 @@ func (x *LoginResponse) GetRefreshToken() string {
 
 type IsAdminRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        int64                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"` //user id to validate
+	UserUuid      string                 `protobuf:"bytes,1,opt,name=user_uuid,json=userUuid,proto3" json:"user_uuid,omitempty"` // <-- UUID строкой
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -266,16 +266,16 @@ func (*IsAdminRequest) Descriptor() ([]byte, []int) {
 	return file_sso_sso_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *IsAdminRequest) GetUserId() int64 {
+func (x *IsAdminRequest) GetUserUuid() string {
 	if x != nil {
-		return x.UserId
+		return x.UserUuid
 	}
-	return 0
+	return ""
 }
 
 type IsAdminResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	IsAdmin       bool                   `protobuf:"varint,1,opt,name=is_admin,json=isAdmin,proto3" json:"is_admin,omitempty"` // indicates whether the user is an admin
+	IsAdmin       bool                   `protobuf:"varint,1,opt,name=is_admin,json=isAdmin,proto3" json:"is_admin,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -319,7 +319,8 @@ func (x *IsAdminResponse) GetIsAdmin() bool {
 
 type ValidateTokenRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Token         string                 `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"` // token to validate
+	Token         string                 `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
+	AppId         int64                  `protobuf:"varint,2,opt,name=app_id,json=appId,proto3" json:"app_id,omitempty"` // <-- добавить app_id, иначе ты не сможешь проверить подпись по secret конкретного app
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -361,9 +362,16 @@ func (x *ValidateTokenRequest) GetToken() string {
 	return ""
 }
 
+func (x *ValidateTokenRequest) GetAppId() int64 {
+	if x != nil {
+		return x.AppId
+	}
+	return 0
+}
+
 type ValidateTokenResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        int64                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"` // user ID if token is valid
+	UserUuid      string                 `protobuf:"bytes,1,opt,name=user_uuid,json=userUuid,proto3" json:"user_uuid,omitempty"` // <-- UUID строкой
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -398,11 +406,11 @@ func (*ValidateTokenResponse) Descriptor() ([]byte, []int) {
 	return file_sso_sso_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *ValidateTokenResponse) GetUserId() int64 {
+func (x *ValidateTokenResponse) GetUserUuid() string {
 	if x != nil {
-		return x.UserId
+		return x.UserUuid
 	}
-	return 0
+	return ""
 }
 
 type RefreshRequest struct {
@@ -555,7 +563,6 @@ func (x *LogoutRequest) GetRefreshToken() string {
 
 type LogoutResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Logout        bool                   `protobuf:"varint,1,opt,name=logout,proto3" json:"logout,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -590,13 +597,6 @@ func (*LogoutResponse) Descriptor() ([]byte, []int) {
 	return file_sso_sso_proto_rawDescGZIP(), []int{11}
 }
 
-func (x *LogoutResponse) GetLogout() bool {
-	if x != nil {
-		return x.Logout
-	}
-	return false
-}
-
 var File_sso_sso_proto protoreflect.FileDescriptor
 
 const file_sso_sso_proto_rawDesc = "" +
@@ -606,22 +606,23 @@ const file_sso_sso_proto_rawDesc = "" +
 	"\x05email\x18\x01 \x01(\tR\x05email\x12\x1a\n" +
 	"\bpassword\x18\x02 \x01(\tR\bpassword\"/\n" +
 	"\x10RegisterResponse\x12\x1b\n" +
-	"\tuser_uuid\x18\x01 \x01(\x03R\buserUuid\"W\n" +
+	"\tuser_uuid\x18\x01 \x01(\tR\buserUuid\"W\n" +
 	"\fLoginRequest\x12\x14\n" +
 	"\x05email\x18\x01 \x01(\tR\x05email\x12\x1a\n" +
 	"\bpassword\x18\x02 \x01(\tR\bpassword\x12\x15\n" +
 	"\x06app_id\x18\x03 \x01(\x05R\x05appId\"W\n" +
 	"\rLoginResponse\x12!\n" +
 	"\faccess_token\x18\x01 \x01(\tR\vaccessToken\x12#\n" +
-	"\rrefresh_token\x18\x02 \x01(\tR\frefreshToken\")\n" +
-	"\x0eIsAdminRequest\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\x03R\x06userId\",\n" +
+	"\rrefresh_token\x18\x02 \x01(\tR\frefreshToken\"-\n" +
+	"\x0eIsAdminRequest\x12\x1b\n" +
+	"\tuser_uuid\x18\x01 \x01(\tR\buserUuid\",\n" +
 	"\x0fIsAdminResponse\x12\x19\n" +
-	"\bis_admin\x18\x01 \x01(\bR\aisAdmin\",\n" +
+	"\bis_admin\x18\x01 \x01(\bR\aisAdmin\"C\n" +
 	"\x14ValidateTokenRequest\x12\x14\n" +
-	"\x05token\x18\x01 \x01(\tR\x05token\"0\n" +
-	"\x15ValidateTokenResponse\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\x03R\x06userId\"L\n" +
+	"\x05token\x18\x01 \x01(\tR\x05token\x12\x15\n" +
+	"\x06app_id\x18\x02 \x01(\x03R\x05appId\"4\n" +
+	"\x15ValidateTokenResponse\x12\x1b\n" +
+	"\tuser_uuid\x18\x01 \x01(\tR\buserUuid\"L\n" +
 	"\x0eRefreshRequest\x12#\n" +
 	"\rrefresh_token\x18\x01 \x01(\tR\frefreshToken\x12\x15\n" +
 	"\x06app_id\x18\x02 \x01(\x03R\x05appId\"Y\n" +
@@ -629,9 +630,8 @@ const file_sso_sso_proto_rawDesc = "" +
 	"\faccess_token\x18\x01 \x01(\tR\vaccessToken\x12#\n" +
 	"\rrefresh_token\x18\x02 \x01(\tR\frefreshToken\"4\n" +
 	"\rLogoutRequest\x12#\n" +
-	"\rrefresh_token\x18\x01 \x01(\tR\frefreshToken\"(\n" +
-	"\x0eLogoutResponse\x12\x16\n" +
-	"\x06logout\x18\x01 \x01(\bR\x06logout2\xe2\x02\n" +
+	"\rrefresh_token\x18\x01 \x01(\tR\frefreshToken\"\x10\n" +
+	"\x0eLogoutResponse2\xe2\x02\n" +
 	"\x04Auth\x129\n" +
 	"\bRegister\x12\x15.auth.RegisterRequest\x1a\x16.auth.RegisterResponse\x120\n" +
 	"\x05Login\x12\x12.auth.LoginRequest\x1a\x13.auth.LoginResponse\x126\n" +
