@@ -1,7 +1,6 @@
 syntax = "proto3";
 
 option go_package = "khorkov.sso.v1;ssov1";
-
 package auth;
 
 service Auth{
@@ -19,13 +18,16 @@ message RegisterRequest{
 }
 
 message RegisterResponse{
-  string user_uuid = 1; // <-- UUID строкой
+  string user_uuid = 1;
 }
 
 message LoginRequest{
   string email = 1;
   string password = 2;
   int32 app_id = 3;
+
+  // ✅ добавили
+  string device_id = 4;
 }
 
 message LoginResponse{
@@ -34,7 +36,7 @@ message LoginResponse{
 }
 
 message IsAdminRequest{
-  string user_uuid = 1; // <-- UUID строкой
+  string user_uuid = 1;
 }
 
 message IsAdminResponse{
@@ -43,16 +45,19 @@ message IsAdminResponse{
 
 message ValidateTokenRequest{
   string token = 1;
-  int64 app_id = 2; // <-- добавить app_id, иначе ты не сможешь проверить подпись по secret конкретного app
+  int64 app_id = 2;
 }
 
 message ValidateTokenResponse{
-  string user_uuid = 1; // <-- UUID строкой
+  string user_uuid = 1;
 }
 
 message RefreshRequest {
   string refresh_token = 1;
   int64  app_id = 2;
+
+  // ✅ добавили
+  string device_id = 3;
 }
 
 message RefreshResponse {
@@ -62,6 +67,12 @@ message RefreshResponse {
 
 message LogoutRequest {
   string refresh_token = 1;
+
+  // ✅ добавили (чтобы логаут был “в рамках одного устройства”)
+  int64 app_id = 2;
+  string device_id = 3;
 }
 
-message LogoutResponse {}
+message LogoutResponse {
+  bool isLogout = 1;
+}

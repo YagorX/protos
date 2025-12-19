@@ -75,7 +75,7 @@ func (x *RegisterRequest) GetPassword() string {
 
 type RegisterResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserUuid      string                 `protobuf:"bytes,1,opt,name=user_uuid,json=userUuid,proto3" json:"user_uuid,omitempty"` // <-- UUID строкой
+	UserUuid      string                 `protobuf:"bytes,1,opt,name=user_uuid,json=userUuid,proto3" json:"user_uuid,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -118,10 +118,12 @@ func (x *RegisterResponse) GetUserUuid() string {
 }
 
 type LoginRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
-	Password      string                 `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
-	AppId         int32                  `protobuf:"varint,3,opt,name=app_id,json=appId,proto3" json:"app_id,omitempty"`
+	state    protoimpl.MessageState `protogen:"open.v1"`
+	Email    string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
+	Password string                 `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
+	AppId    int32                  `protobuf:"varint,3,opt,name=app_id,json=appId,proto3" json:"app_id,omitempty"`
+	// ✅ добавили
+	DeviceId      string `protobuf:"bytes,4,opt,name=device_id,json=deviceId,proto3" json:"device_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -175,6 +177,13 @@ func (x *LoginRequest) GetAppId() int32 {
 		return x.AppId
 	}
 	return 0
+}
+
+func (x *LoginRequest) GetDeviceId() string {
+	if x != nil {
+		return x.DeviceId
+	}
+	return ""
 }
 
 type LoginResponse struct {
@@ -231,7 +240,7 @@ func (x *LoginResponse) GetRefreshToken() string {
 
 type IsAdminRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserUuid      string                 `protobuf:"bytes,1,opt,name=user_uuid,json=userUuid,proto3" json:"user_uuid,omitempty"` // <-- UUID строкой
+	UserUuid      string                 `protobuf:"bytes,1,opt,name=user_uuid,json=userUuid,proto3" json:"user_uuid,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -320,7 +329,7 @@ func (x *IsAdminResponse) GetIsAdmin() bool {
 type ValidateTokenRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Token         string                 `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
-	AppId         int64                  `protobuf:"varint,2,opt,name=app_id,json=appId,proto3" json:"app_id,omitempty"` // <-- добавить app_id, иначе ты не сможешь проверить подпись по secret конкретного app
+	AppId         int64                  `protobuf:"varint,2,opt,name=app_id,json=appId,proto3" json:"app_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -371,7 +380,7 @@ func (x *ValidateTokenRequest) GetAppId() int64 {
 
 type ValidateTokenResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserUuid      string                 `protobuf:"bytes,1,opt,name=user_uuid,json=userUuid,proto3" json:"user_uuid,omitempty"` // <-- UUID строкой
+	UserUuid      string                 `protobuf:"bytes,1,opt,name=user_uuid,json=userUuid,proto3" json:"user_uuid,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -414,9 +423,11 @@ func (x *ValidateTokenResponse) GetUserUuid() string {
 }
 
 type RefreshRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	RefreshToken  string                 `protobuf:"bytes,1,opt,name=refresh_token,json=refreshToken,proto3" json:"refresh_token,omitempty"`
-	AppId         int64                  `protobuf:"varint,2,opt,name=app_id,json=appId,proto3" json:"app_id,omitempty"`
+	state        protoimpl.MessageState `protogen:"open.v1"`
+	RefreshToken string                 `protobuf:"bytes,1,opt,name=refresh_token,json=refreshToken,proto3" json:"refresh_token,omitempty"`
+	AppId        int64                  `protobuf:"varint,2,opt,name=app_id,json=appId,proto3" json:"app_id,omitempty"`
+	// ✅ добавили
+	DeviceId      string `protobuf:"bytes,3,opt,name=device_id,json=deviceId,proto3" json:"device_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -463,6 +474,13 @@ func (x *RefreshRequest) GetAppId() int64 {
 		return x.AppId
 	}
 	return 0
+}
+
+func (x *RefreshRequest) GetDeviceId() string {
+	if x != nil {
+		return x.DeviceId
+	}
+	return ""
 }
 
 type RefreshResponse struct {
@@ -518,8 +536,11 @@ func (x *RefreshResponse) GetRefreshToken() string {
 }
 
 type LogoutRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	RefreshToken  string                 `protobuf:"bytes,1,opt,name=refresh_token,json=refreshToken,proto3" json:"refresh_token,omitempty"`
+	state        protoimpl.MessageState `protogen:"open.v1"`
+	RefreshToken string                 `protobuf:"bytes,1,opt,name=refresh_token,json=refreshToken,proto3" json:"refresh_token,omitempty"`
+	// ✅ добавили (чтобы логаут был “в рамках одного устройства”)
+	AppId         int64  `protobuf:"varint,2,opt,name=app_id,json=appId,proto3" json:"app_id,omitempty"`
+	DeviceId      string `protobuf:"bytes,3,opt,name=device_id,json=deviceId,proto3" json:"device_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -561,8 +582,23 @@ func (x *LogoutRequest) GetRefreshToken() string {
 	return ""
 }
 
+func (x *LogoutRequest) GetAppId() int64 {
+	if x != nil {
+		return x.AppId
+	}
+	return 0
+}
+
+func (x *LogoutRequest) GetDeviceId() string {
+	if x != nil {
+		return x.DeviceId
+	}
+	return ""
+}
+
 type LogoutResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	IsLogout      bool                   `protobuf:"varint,1,opt,name=isLogout,proto3" json:"isLogout,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -597,6 +633,13 @@ func (*LogoutResponse) Descriptor() ([]byte, []int) {
 	return file_sso_sso_proto_rawDescGZIP(), []int{11}
 }
 
+func (x *LogoutResponse) GetIsLogout() bool {
+	if x != nil {
+		return x.IsLogout
+	}
+	return false
+}
+
 var File_sso_sso_proto protoreflect.FileDescriptor
 
 const file_sso_sso_proto_rawDesc = "" +
@@ -606,11 +649,12 @@ const file_sso_sso_proto_rawDesc = "" +
 	"\x05email\x18\x01 \x01(\tR\x05email\x12\x1a\n" +
 	"\bpassword\x18\x02 \x01(\tR\bpassword\"/\n" +
 	"\x10RegisterResponse\x12\x1b\n" +
-	"\tuser_uuid\x18\x01 \x01(\tR\buserUuid\"W\n" +
+	"\tuser_uuid\x18\x01 \x01(\tR\buserUuid\"t\n" +
 	"\fLoginRequest\x12\x14\n" +
 	"\x05email\x18\x01 \x01(\tR\x05email\x12\x1a\n" +
 	"\bpassword\x18\x02 \x01(\tR\bpassword\x12\x15\n" +
-	"\x06app_id\x18\x03 \x01(\x05R\x05appId\"W\n" +
+	"\x06app_id\x18\x03 \x01(\x05R\x05appId\x12\x1b\n" +
+	"\tdevice_id\x18\x04 \x01(\tR\bdeviceId\"W\n" +
 	"\rLoginResponse\x12!\n" +
 	"\faccess_token\x18\x01 \x01(\tR\vaccessToken\x12#\n" +
 	"\rrefresh_token\x18\x02 \x01(\tR\frefreshToken\"-\n" +
@@ -622,16 +666,20 @@ const file_sso_sso_proto_rawDesc = "" +
 	"\x05token\x18\x01 \x01(\tR\x05token\x12\x15\n" +
 	"\x06app_id\x18\x02 \x01(\x03R\x05appId\"4\n" +
 	"\x15ValidateTokenResponse\x12\x1b\n" +
-	"\tuser_uuid\x18\x01 \x01(\tR\buserUuid\"L\n" +
+	"\tuser_uuid\x18\x01 \x01(\tR\buserUuid\"i\n" +
 	"\x0eRefreshRequest\x12#\n" +
 	"\rrefresh_token\x18\x01 \x01(\tR\frefreshToken\x12\x15\n" +
-	"\x06app_id\x18\x02 \x01(\x03R\x05appId\"Y\n" +
+	"\x06app_id\x18\x02 \x01(\x03R\x05appId\x12\x1b\n" +
+	"\tdevice_id\x18\x03 \x01(\tR\bdeviceId\"Y\n" +
 	"\x0fRefreshResponse\x12!\n" +
 	"\faccess_token\x18\x01 \x01(\tR\vaccessToken\x12#\n" +
-	"\rrefresh_token\x18\x02 \x01(\tR\frefreshToken\"4\n" +
+	"\rrefresh_token\x18\x02 \x01(\tR\frefreshToken\"h\n" +
 	"\rLogoutRequest\x12#\n" +
-	"\rrefresh_token\x18\x01 \x01(\tR\frefreshToken\"\x10\n" +
-	"\x0eLogoutResponse2\xe2\x02\n" +
+	"\rrefresh_token\x18\x01 \x01(\tR\frefreshToken\x12\x15\n" +
+	"\x06app_id\x18\x02 \x01(\x03R\x05appId\x12\x1b\n" +
+	"\tdevice_id\x18\x03 \x01(\tR\bdeviceId\",\n" +
+	"\x0eLogoutResponse\x12\x1a\n" +
+	"\bisLogout\x18\x01 \x01(\bR\bisLogout2\xe2\x02\n" +
 	"\x04Auth\x129\n" +
 	"\bRegister\x12\x15.auth.RegisterRequest\x1a\x16.auth.RegisterResponse\x120\n" +
 	"\x05Login\x12\x12.auth.LoginRequest\x1a\x13.auth.LoginResponse\x126\n" +
